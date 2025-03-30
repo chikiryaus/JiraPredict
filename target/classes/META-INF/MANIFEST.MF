@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Atlassian-Build-Date: 2025-03-30T04:27:01+0300
+Atlassian-Plugin-Key: com.atlassian.tutorial.myPlugin
+Bnd-LastModified: 1743298101349
+Build-Jdk: 1.8.0_181
+Built-By: chiki
+Bundle-Description: This is the com.atlassian.tutorial:myPlugin plugin f
+ or Atlassian JIRA.
+Bundle-DocURL: http://www.example.com/
+Bundle-ManifestVersion: 2
+Bundle-Name: myPlugin
+Bundle-SymbolicName: com.atlassian.tutorial.myPlugin
+Bundle-Vendor: Example Company
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Export-Package: com.atlassian.tutorial.myPlugin.api;version="1.0.0"
+Import-Package: org.eclipse.gemini.blueprint.context;resolution:=optiona
+ l,org.eclipse.gemini.blueprint.service.exporter;resolution:=optional,or
+ g.eclipse.gemini.blueprint.service.exporter.support;resolution:=optiona
+ l,org.eclipse.gemini.blueprint.service.importer.support;resolution:=opt
+ ional,com.atlassian.annotations.nonnull,com.atlassian.plugin,com.atlass
+ ian.plugin.module,com.atlassian.plugin.osgi.external,com.atlassian.sal.
+ api,com.atlassian.tutorial.myPlugin.api,javax.annotation,org.osgi.frame
+ work,org.slf4j,org.springframework.beans,org.springframework.beans.fact
+ ory,org.springframework.beans.factory.config,org.springframework.cglib.
+ core,org.springframework.cglib.proxy,org.springframework.cglib.reflect,
+ org.springframework.context,org.springframework.context.annotation,org.
+ springframework.core.type
+Spring-Context: *
+Tool: Bnd-3.5.0.201709291849

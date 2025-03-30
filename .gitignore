@@ -1,0 +1,23 @@
+# Compiled/built files
+target/
+amps-standalone/
+amps-data/
+
+# Log files
+*.log
+
+# IDE files (IntelliJ IDEA example)
+.idea/
+*.iml
+
+# IDE files (Eclipse example)
+.classpath
+.project
+.settings/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Dependency directories (Maven handles this, but just in case)
+lib/
