@@ -106,6 +106,7 @@
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
+                    <skipAllPrompts>true</skipAllPrompts>
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
                     <!-- Uncomment to install TestKit backdoor in JIRA. -->
