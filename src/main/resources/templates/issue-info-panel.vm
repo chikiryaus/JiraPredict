@@ -19,7 +19,7 @@
             #if($issueResolutionDate)
                 <li><strong>Solved:</strong> $!issueResolutionDate</li> ## Появится, только если задача решена
             #end
-            ## <li><strong>Мое поле:</strong> $!myCustomFieldValue</li> ## Если добавляли кастомное поле
+            <li><strong>Complexity:</strong> $!myCustomFieldValue</li> ## Если добавляли кастомное поле
         </ul>
     #end
 </div>
