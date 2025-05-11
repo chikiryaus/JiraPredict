@@ -1,3 +1,4 @@
 com\atlassian\tutorial\myPlugin\impl\MyPluginComponentImpl.class
 com\atlassian\tutorial\myPlugin\api\MyPluginComponent.class
 com\atlassian\tutorial\myPlugin\config\MyPluginJavaConfig.class
+com\atlassian\tutorial\myPlugin\ui\IssueInfoContextProvider.class

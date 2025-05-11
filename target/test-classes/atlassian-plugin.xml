@@ -4,7 +4,7 @@
   <plugin-info> 
     <description>This is the com.atlassian.tutorial:myPlugin plugin for Atlassian JIRA.</description>  
     <version>1.0.0-SNAPSHOT</version>  
-    <vendor name="Example Company" url="http://www.example.com/"/> 
+    <vendor name="Chikiryaus" url="chikiryaus@gmail.com"/> 
   </plugin-info>  
   <!-- from our base plugin -->  
   <component-import key="myComponent" interface="com.atlassian.tutorial.myPlugin.api.MyPluginComponent"/>  

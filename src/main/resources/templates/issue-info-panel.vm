@@ -1,0 +1,25 @@
+<div class="mod-header">
+    <h3>Info about task (My Plugin)</h3>
+</div>
+<div class="mod-content">
+    #if($error)
+        <p style="color: red;">$!error</p>
+    #else
+        <ul>
+            <li><strong>Key:</strong> $!issueKey</li>
+            <li><strong>Header:</strong> $!issueSummary</li>
+            <li><strong>Type:</strong> $!issueTypeName</li>
+            <li><strong>Priority:</strong> $!issuePriorityName</li>
+            <li><strong>Project:</strong> $!issueProjectName (ID: $!issueProjectId)</li>
+            <li><strong>Status:</strong> $!issueStatusName</li>
+            <li><strong>Reporter:</strong> $!issueReporterName</li>
+            <li><strong>Assignee:</strong> $!issueAssigneeName</li>
+            <li><strong>Created:</strong> $!issueCreatedDate</li> ## Отобразит стандартный toString() даты
+            <li><strong>Updated:</strong> $!issueUpdatedDate</li> ## Отобразит стандартный toString() даты
+            #if($issueResolutionDate)
+                <li><strong>Solved:</strong> $!issueResolutionDate</li> ## Появится, только если задача решена
+            #end
+            ## <li><strong>Мое поле:</strong> $!myCustomFieldValue</li> ## Если добавляли кастомное поле
+        </ul>
+    #end
+</div>
