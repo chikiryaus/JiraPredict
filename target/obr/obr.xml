@@ -1,7 +1,7 @@
-<repository lastmodified='20250511085933.449'>
+<repository lastmodified='20250511105845.854'>
   <resource id='com.atlassian.tutorial.myPlugin/1.0.0.SNAPSHOT' symbolicname='com.atlassian.tutorial.myPlugin' presentationname='myPlugin' uri='myPlugin-1.0.0-SNAPSHOT.jar' version='1.0.0.SNAPSHOT'>
     <description>This is the com.atlassian.tutorial:myPlugin plugin for Atlassian JIRA.</description>
-    <size>240805</size>
+    <size>320136</size>
     <documentation>chikiryaus@gmail.com</documentation>
     <capability name='bundle'>
       <p n='symbolicname' v='com.atlassian.tutorial.myPlugin'/>
@@ -41,6 +41,7 @@
     <require name='package' filter='(&amp;(package=com.atlassian.plugin.spring.scanner.annotation.imports))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin.spring.scanner.annotation.imports</require>
     <require name='package' filter='(&amp;(package=com.atlassian.query))' extend='false' multiple='false' optional='false'>Import package com.atlassian.query</require>
     <require name='package' filter='(&amp;(package=com.atlassian.sal.api))' extend='false' multiple='false' optional='false'>Import package com.atlassian.sal.api</require>
+    <require name='package' filter='(&amp;(package=com.atlassian.sal.api.pluginsettings))' extend='false' multiple='false' optional='false'>Import package com.atlassian.sal.api.pluginsettings</require>
     <require name='package' filter='(&amp;(package=com.atlassian.tutorial.myPlugin.api)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))' extend='false' multiple='false' optional='false'>Import package com.atlassian.tutorial.myPlugin.api;version="[1.0,2)"</require>
     <require name='package' filter='(&amp;(package=javax.annotation))' extend='false' multiple='false' optional='false'>Import package javax.annotation</require>
     <require name='package' filter='(&amp;(package=javax.inject))' extend='false' multiple='false' optional='false'>Import package javax.inject</require>

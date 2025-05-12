@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Atlassian-Build-Date: 2025-05-11T20:59:30+0300
+Atlassian-Build-Date: 2025-05-11T22:58:40+0300
 Atlassian-Plugin-Key: com.atlassian.tutorial.myPlugin
-Bnd-LastModified: 1746986372112
+Bnd-LastModified: 1746993524040
 Build-Jdk: 1.8.0_181
 Built-By: chiki
 Bundle-Description: This is the com.atlassian.tutorial:myPlugin plugin f
@@ -29,12 +29,13 @@ Import-Package: org.eclipse.gemini.blueprint.context;resolution:=optiona
  ser.util,com.atlassian.jira.web.bean,com.atlassian.plugin,com.atlassian
  .plugin.module,com.atlassian.plugin.osgi.external,com.atlassian.plugin.
  spring.scanner.annotation.imports,com.atlassian.query,com.atlassian.sal
- .api,com.atlassian.tutorial.myPlugin.api;version="[1.0,2)",javax.annota
- tion,javax.inject,org.osgi.framework,org.slf4j,org.springframework.bean
- s,org.springframework.beans.factory,org.springframework.beans.factory.c
- onfig,org.springframework.cglib.core,org.springframework.cglib.proxy,or
- g.springframework.cglib.reflect,org.springframework.context,org.springf
- ramework.context.annotation,org.springframework.core.type
+ .api,com.atlassian.sal.api.pluginsettings,com.atlassian.tutorial.myPlug
+ in.api;version="[1.0,2)",javax.annotation,javax.inject,org.osgi.framewo
+ rk,org.slf4j,org.springframework.beans,org.springframework.beans.factor
+ y,org.springframework.beans.factory.config,org.springframework.cglib.co
+ re,org.springframework.cglib.proxy,org.springframework.cglib.reflect,or
+ g.springframework.context,org.springframework.context.annotation,org.sp
+ ringframework.core.type
 Originally-Created-By: Apache Maven Bundle Plugin
 Spring-Context: *
 Tool: Bnd-3.5.0.201709291849
