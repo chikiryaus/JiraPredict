@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Atlassian-Build-Date: 2025-05-11T22:58:40+0300
+Atlassian-Build-Date: 2025-05-24T11:18:35+0300
 Atlassian-Plugin-Key: com.atlassian.tutorial.myPlugin
-Bnd-LastModified: 1746993524040
+Bnd-LastModified: 1748074719119
 Build-Jdk: 1.8.0_181
 Built-By: chiki
 Bundle-Description: This is the com.atlassian.tutorial:myPlugin plugin f
@@ -20,22 +20,20 @@ Import-Package: org.eclipse.gemini.blueprint.context;resolution:=optiona
  l,org.eclipse.gemini.blueprint.service.importer.support;resolution:=opt
  ional,com.atlassian.annotations.nonnull,com.atlassian.jira.bc.issue.sea
  rch,com.atlassian.jira.component,com.atlassian.jira.issue,com.atlassian
- .jira.issue.customfields.option,com.atlassian.jira.issue.fields,com.atl
- assian.jira.issue.issuetype,com.atlassian.jira.issue.priority,com.atlas
- sian.jira.issue.search,com.atlassian.jira.issue.status,com.atlassian.ji
- ra.jql.builder,com.atlassian.jira.plugin.webfragment.contextproviders,c
- om.atlassian.jira.plugin.webfragment.model,com.atlassian.jira.project,c
- om.atlassian.jira.security,com.atlassian.jira.user,com.atlassian.jira.u
- ser.util,com.atlassian.jira.web.bean,com.atlassian.plugin,com.atlassian
- .plugin.module,com.atlassian.plugin.osgi.external,com.atlassian.plugin.
- spring.scanner.annotation.imports,com.atlassian.query,com.atlassian.sal
- .api,com.atlassian.sal.api.pluginsettings,com.atlassian.tutorial.myPlug
- in.api;version="[1.0,2)",javax.annotation,javax.inject,org.osgi.framewo
- rk,org.slf4j,org.springframework.beans,org.springframework.beans.factor
- y,org.springframework.beans.factory.config,org.springframework.cglib.co
- re,org.springframework.cglib.proxy,org.springframework.cglib.reflect,or
- g.springframework.context,org.springframework.context.annotation,org.sp
- ringframework.core.type
+ .jira.issue.fields,com.atlassian.jira.issue.issuetype,com.atlassian.jir
+ a.issue.priority,com.atlassian.jira.issue.search,com.atlassian.jira.jql
+ .builder,com.atlassian.jira.plugin.webfragment.contextproviders,com.atl
+ assian.jira.plugin.webfragment.model,com.atlassian.jira.project,com.atl
+ assian.jira.security,com.atlassian.jira.user,com.atlassian.jira.user.ut
+ il,com.atlassian.jira.web.bean,com.atlassian.plugin,com.atlassian.plugi
+ n.module,com.atlassian.plugin.osgi.external,com.atlassian.query,com.atl
+ assian.query.order,com.atlassian.sal.api,com.atlassian.tutorial.myPlugi
+ n.api;version="[1.0,2)",javax.annotation,org.osgi.framework,org.slf4j,o
+ rg.springframework.beans,org.springframework.beans.factory,org.springfr
+ amework.beans.factory.config,org.springframework.cglib.core,org.springf
+ ramework.cglib.proxy,org.springframework.cglib.reflect,org.springframew
+ ork.context,org.springframework.context.annotation,org.springframework.
+ core.type
 Originally-Created-By: Apache Maven Bundle Plugin
 Spring-Context: *
 Tool: Bnd-3.5.0.201709291849

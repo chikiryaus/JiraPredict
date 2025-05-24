@@ -6,20 +6,37 @@
         <p style="color: red;">$!error</p>
     #else
         <ul>
-            <li><strong>Key:</strong> $!issueKey</li>
-            <li><strong>Header:</strong> $!issueSummary</li>
-            <li><strong>Type:</strong> $!issueTypeName</li>
-            <li><strong>Priority:</strong> $!issuePriorityName</li>
-            <li><strong>Project:</strong> $!issueProjectName (ID: $!issueProjectId)</li>
-            <li><strong>Status:</strong> $!issueStatusName</li>
-            <li><strong>Reporter:</strong> $!issueReporterName</li>
-            <li><strong>Assignee:</strong> $!issueAssigneeName</li>
-            <li><strong>Created:</strong> $!issueCreatedDate</li> ## Отобразит стандартный toString() даты
-            <li><strong>Updated:</strong> $!issueUpdatedDate</li> ## Отобразит стандартный toString() даты
-            #if($issueResolutionDate)
-                <li><strong>Solved:</strong> $!issueResolutionDate</li> ## Появится, только если задача решена
+##            <li><strong>Key:</strong> $!issueKey</li>
+##            <li><strong>Header:</strong> $!issueSummary</li>
+##            <li><strong>Type:</strong> $!issueTypeName</li>
+##            <li><strong>Priority:</strong> $!issuePriorityName</li>
+##            <li><strong>Project:</strong> $!issueProjectName (ID: $!issueProjectId)</li>
+##            <li><strong>Status:</strong> $!issueStatusName</li>
+##            <li><strong>Reporter:</strong> $!issueReporterName</li>
+##            <li><strong>Assignee:</strong> $!issueAssigneeName</li>
+##            <li><strong>Created:</strong> $!issueCreatedDate</li> ## РћС‚РѕР±СЂР°Р·РёС‚ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ toString() РґР°С‚С‹
+##            <li><strong>Updated:</strong> $!issueUpdatedDate</li> ## РћС‚РѕР±СЂР°Р·РёС‚ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ toString() РґР°С‚С‹
+##            #if($issueResolutionDate)
+##                <li><strong>Solved:</strong> $!issueResolutionDate</li> ## РџРѕСЏРІРёС‚СЃСЏ, С‚РѕР»СЊРєРѕ РµСЃР»Рё Р·Р°РґР°С‡Р° СЂРµС€РµРЅР°
+##            #end
+##            <li><strong>Complexity:</strong> $!myCustomFieldValue</li> ## Р•СЃР»Рё РґРѕР±Р°РІР»СЏР»Рё РєР°СЃС‚РѕРјРЅРѕРµ РїРѕР»Рµ
+            <h4>Prediction from Gemini AI:</h4>
+            #if($geminiPrediction)
+                <p style="font-weight: bold; color: #0052cc;">$!geminiPrediction</p>
+                #if($geminiPrediction.startsWith("РћС€РёР±РєР°"))
+                    <p><small><em>Please, check API key Gemini in the plugin code or Jira logs for details.</em></small></p>
+                #end
+            #else
+                <p><em>Prediction from Gemini not available.</em></p>
             #end
-            <li><strong>Complexity:</strong> $!myCustomFieldValue</li> ## Если добавляли кастомное поле
+            ## Р”РѕР±Р°РІР»СЏРµРј РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ РїСЂРѕРјРїС‚Р°
+            #if($geminiPrompt && $geminiPrompt != "")
+                <details style="margin-top: 10px; border: 1px solid #ccc; padding: 5px; border-radius: 3px;">
+                    <summary style="cursor: pointer; font-size: 0.9em;">РџРѕРєР°Р·Р°С‚СЊ/СЃРєСЂС‹С‚СЊ РїСЂРѕРјРїС‚ РґР»СЏ Gemini</summary>
+                    <pre style="white-space: pre-wrap; word-wrap: break-word; font-size: 0.85em; margin-top: 5px; background-color: #f5f5f5; padding: 8px; border-radius: 3px;">$!geminiPrompt</pre>
+                </details>
+            #end
+
         </ul>
     #end
 </div>
