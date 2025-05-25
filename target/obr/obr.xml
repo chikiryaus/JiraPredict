@@ -1,7 +1,7 @@
-<repository lastmodified='20250524111841.026'>
+<repository lastmodified='20250525032750.411'>
   <resource id='com.atlassian.tutorial.myPlugin/1.0.0.SNAPSHOT' symbolicname='com.atlassian.tutorial.myPlugin' presentationname='myPlugin' uri='myPlugin-1.0.0-SNAPSHOT.jar' version='1.0.0.SNAPSHOT'>
     <description>This is the com.atlassian.tutorial:myPlugin plugin for Atlassian JIRA.</description>
-    <size>320612</size>
+    <size>320004</size>
     <documentation>chikiryaus@gmail.com</documentation>
     <capability name='bundle'>
       <p n='symbolicname' v='com.atlassian.tutorial.myPlugin'/>
@@ -25,19 +25,18 @@
     <require name='package' filter='(&amp;(package=com.atlassian.jira.issue.issuetype))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.issue.issuetype</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.issue.priority))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.issue.priority</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.issue.search))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.issue.search</require>
-    <require name='package' filter='(&amp;(package=com.atlassian.jira.jql.builder))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.jql.builder</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.plugin.webfragment.contextproviders))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.plugin.webfragment.contextproviders</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.plugin.webfragment.model))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.plugin.webfragment.model</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.project))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.project</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.security))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.security</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.user))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.user</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.user.util))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.user.util</require>
+    <require name='package' filter='(&amp;(package=com.atlassian.jira.util))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.util</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.web.bean))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.web.bean</require>
     <require name='package' filter='(&amp;(package=com.atlassian.plugin))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin</require>
     <require name='package' filter='(&amp;(package=com.atlassian.plugin.module))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin.module</require>
     <require name='package' filter='(&amp;(package=com.atlassian.plugin.osgi.external))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin.osgi.external</require>
     <require name='package' filter='(&amp;(package=com.atlassian.query))' extend='false' multiple='false' optional='false'>Import package com.atlassian.query</require>
-    <require name='package' filter='(&amp;(package=com.atlassian.query.order))' extend='false' multiple='false' optional='false'>Import package com.atlassian.query.order</require>
     <require name='package' filter='(&amp;(package=com.atlassian.sal.api))' extend='false' multiple='false' optional='false'>Import package com.atlassian.sal.api</require>
     <require name='package' filter='(&amp;(package=com.atlassian.tutorial.myPlugin.api)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))' extend='false' multiple='false' optional='false'>Import package com.atlassian.tutorial.myPlugin.api;version="[1.0,2)"</require>
     <require name='package' filter='(&amp;(package=javax.annotation))' extend='false' multiple='false' optional='false'>Import package javax.annotation</require>
