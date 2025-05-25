@@ -1,5 +1,6 @@
 package com.atlassian.tutorial.myPlugin.ui;
 
+// ... (все существующие импорты) ...
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
@@ -17,11 +18,9 @@ import java.util.Map;
 public class IssueInfoContextProvider extends AbstractJiraContextProvider {
 
     private static final Logger log = LoggerFactory.getLogger(IssueInfoContextProvider.class);
-    private GeminiPredictionService geminiService; // Поле для хранения экземпляра
+    private GeminiPredictionService geminiService;
 
     public IssueInfoContextProvider() {
-        // Теперь мы создаем экземпляр сервиса напрямую через new,
-        // так как GeminiPredictionService больше не является управляемым OSGi компонентом
         this.geminiService = new GeminiPredictionService();
     }
 
@@ -37,28 +36,33 @@ public class IssueInfoContextProvider extends AbstractJiraContextProvider {
             contextMap.put("issueTypeName", currentIssue.getIssueType().getName());
             contextMap.put("issuePriorityName", currentIssue.getPriority() != null ? currentIssue.getPriority().getName() : "N/A");
 
-            // ЗАМЕНИТЕ "customfield_10000" на ID вашего поля "Сложность"!
-            CustomField complexityField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject("customfield_10000");
-            if (complexityField != null) {
-                Object complexityValue = currentIssue.getCustomFieldValue(complexityField);
+            // Получаем значение сложности для отображения
+            com.atlassian.jira.issue.fields.CustomField complexityFieldForDisplay = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(GeminiPredictionService.COMPLEXITY_FIELD_ID); // Используем константу
+            if (complexityFieldForDisplay != null) {
+                Object complexityValue = currentIssue.getCustomFieldValue(complexityFieldForDisplay);
                 contextMap.put("issueComplexity", complexityValue != null ? complexityValue.toString() : "N/A");
             } else {
-                log.warn("Custom field 'customfield_10000' (Complexity) not found.");
+                log.warn("Custom field '{}' (Complexity) not found for display.", GeminiPredictionService.COMPLEXITY_FIELD_ID);
                 contextMap.put("issueComplexity", "N/A (Поле не найдено)");
             }
 
-            // Получаем результат (Map) от Gemini
             if (this.geminiService != null) {
+                // Получаем прогноз от Gemini
                 Map<String, String> geminiResult = this.geminiService.getPredictionFromGemini(currentIssue);
                 contextMap.put("geminiPrompt", geminiResult.get("prompt"));
                 contextMap.put("geminiPrediction", geminiResult.get("prediction"));
                 log.debug("ContextProvider: Gemini prediction: {}", geminiResult.get("prediction"));
-                log.debug("ContextProvider: Gemini prompt used: {}", geminiResult.get("prompt"));
+
+                // Получаем прогноз на основе среднего
+                String averageTimePrediction = this.geminiService.getAverageTimeByComplexity(currentIssue);
+                contextMap.put("averageTimePrediction", averageTimePrediction);
+                log.debug("ContextProvider: Average time prediction: {}", averageTimePrediction);
+
             } else {
-                // Эта ветка теперь менее вероятна, так как geminiService создается в конструкторе
                 contextMap.put("geminiPrediction", "Ошибка: Сервис Gemini не инициализирован.");
                 contextMap.put("geminiPrompt", "N/A");
-                log.error("ContextProvider: GeminiPredictionService instance is null (should not happen if constructor ran).");
+                contextMap.put("averageTimePrediction", "Ошибка: Сервис не инициализирован.");
+                log.error("ContextProvider: GeminiPredictionService instance is null!");
             }
 
         } else {

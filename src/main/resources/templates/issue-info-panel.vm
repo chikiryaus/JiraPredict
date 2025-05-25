@@ -20,6 +20,18 @@
 ##                <li><strong>Solved:</strong> $!issueResolutionDate</li> ## Появится, только если задача решена
 ##            #end
 ##            <li><strong>Complexity:</strong> $!myCustomFieldValue</li> ## Если добавляли кастомное поле
+
+            <h4>Prediction on mean value:</h4>
+            #if($averageTimePrediction)
+                <p style="font-weight: bold; color: #de350b;">$!averageTimePrediction</p>
+                #if($averageTimePrediction.startsWith("N/A") || $averageTimePrediction.startsWith("Нет данных"))
+                    <p><small><em>There isn't issues with same complexity.</em></small></p>
+                #end
+            #else
+                <p><em>Mean prediction not available.</em></p>
+            #end
+            <hr/>
+
             <h4>Prediction from Gemini AI:</h4>
             #if($geminiPrediction)
                 <p style="font-weight: bold; color: #0052cc;">$!geminiPrediction</p>
