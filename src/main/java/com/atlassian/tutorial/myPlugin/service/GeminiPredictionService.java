@@ -1,17 +1,20 @@
 package com.atlassian.tutorial.myPlugin.service;
 
-// ... (все существующие импорты) ...
+import com.atlassian.sal.api.pluginsettings.PluginSettings;
+import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import com.atlassian.jira.component.ComponentAccessor; // Нужен для PluginSettingsFactory, если не внедряем
+// ... остальные импорты ...
 import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.issue.customfields.option.Option; // Важно для поля сложности типа "Выпадающий список"
+import com.atlassian.jira.issue.customfields.option.Option;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.web.bean.PagerFilter;
+import com.atlassian.query.order.SortOrder;
 
-// ... (остальные импорты JSON, SLF4J, Java Util, HttpURLConnection и т.д.) ...
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -28,67 +31,92 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
 public class GeminiPredictionService {
 
     private static final Logger log = LoggerFactory.getLogger(GeminiPredictionService.class);
-    private static final String HARDCODED_GEMINI_API_KEY = "AIzaSyB_DYKCaxTIKm9XDZSyRtYAZWeRsyd0n4A"; // ЗАМЕНИТЕ!
+    // Ключ, под которым будет храниться настройка в Jira
+    public static final String GEMINI_API_KEY_PLUGIN_SETTING = "com.atlassian.tutorial.myPlugin.geminiApiKey";
     private static final String GEMINI_API_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
-    private static final int TARGET_EXAMPLE_ISSUES_COUNT_FOR_LLM = 5; // Уменьшил для LLM, чтобы промпт не был слишком большим
+    private static final int TARGET_EXAMPLE_ISSUES_COUNT_FOR_LLM = 5;
     public static final String COMPLEXITY_FIELD_ID = "customfield_10000"; // ЗАМЕНИТЕ!
 
-    private final String apiKey;
+    private String apiKey; // Теперь не final, т.к. может обновляться
 
     public GeminiPredictionService() {
-        this.apiKey = HARDCODED_GEMINI_API_KEY;
-        // ... (проверка ключа)
-        if ("ВАШ_GEMINI_API_КЛЮЧ_ЗДЕСЬ".equals(this.apiKey) || this.apiKey == null || this.apiKey.trim().isEmpty()) {
-            log.warn("Gemini API Key is using a placeholder or is not configured! Please set a valid key directly in the HARDCODED_GEMINI_API_KEY constant.");
+        // Загружаем ключ при инициализации сервиса
+        loadApiKeyFromSettings();
+        if (this.apiKey == null || this.apiKey.trim().isEmpty()) {
+            log.warn("Gemini API Key is not configured in plugin settings! Please configure it via the admin page.");
         } else {
-            log.info("GeminiPredictionService initialized with a hardcoded API key.");
+            log.info("GeminiPredictionService initialized. API Key loaded from settings.");
         }
     }
 
-    // --- Метод для прогноза от Gemini (остается почти таким же, только кол-во примеров может быть другим) ---
+    // Метод для загрузки ключа из настроек плагина
+    private void loadApiKeyFromSettings() {
+        PluginSettingsFactory pluginSettingsFactory = ComponentAccessor.getOSGiComponentInstanceOfType(PluginSettingsFactory.class);
+        if (pluginSettingsFactory != null) {
+            PluginSettings settings = pluginSettingsFactory.createGlobalSettings(); // Используем глобальные настройки
+            this.apiKey = (String) settings.get(GEMINI_API_KEY_PLUGIN_SETTING);
+            if (this.apiKey != null) this.apiKey = this.apiKey.trim(); // Убираем пробелы
+            log.debug("Loaded API Key from settings: '{}'", (this.apiKey != null && !this.apiKey.isEmpty()) ? "****" + this.apiKey.substring(Math.max(0, this.apiKey.length() - 4)) : "null or empty");
+        } else {
+            log.error("PluginSettingsFactory is null! Cannot load API key from settings.");
+            this.apiKey = null;
+        }
+    }
+
+    // Публичный метод для обновления ключа, если он изменился в настройках
+    // Может вызываться перед каждым запросом к Gemini или реже, если это необходимо
+    public void refreshApiKey() {
+        log.debug("Refreshing API Key...");
+        loadApiKeyFromSettings();
+    }
+
     public Map<String, String> getPredictionFromGemini(Issue currentIssue) {
+        refreshApiKey();
         Map<String, String> result = new HashMap<>();
         result.put("prompt", "");
         result.put("prediction", "");
 
-        // ... (проверки ключа и currentIssue) ...
-        if ("ВАШ_GEMINI_API_КЛЮЧ_ЗДЕСЬ".equals(this.apiKey) || this.apiKey == null || this.apiKey.trim().isEmpty()) {
-            result.put("prediction", "Ошибка: API ключ Gemini не настроен.");
+        // Убедимся, что ключ актуален (можно вызывать не всегда, а по необходимости)
+        // refreshApiKey(); // Если ключ мог измениться с момента создания сервиса
+
+        if (this.apiKey == null || this.apiKey.trim().isEmpty()) {
+            result.put("prediction", "Ошибка: API ключ Gemini не настроен в плагине. Пожалуйста, укажите его на странице конфигурации плагина.");
             return result;
         }
+        // ... (остальная часть метода getPredictionFromGemini как в вашем рабочем коде) ...
         if (currentIssue == null) {
             log.warn("Issue object is null in getPredictionFromGemini.");
             result.put("prediction", "Ошибка: Объект текущей задачи не предоставлен.");
             return result;
         }
 
-
         SearchService searchService = ComponentAccessor.getOSGiComponentInstanceOfType(SearchService.class);
         if (searchService == null) {
-            log.error("SearchService is null! Cannot search for similar issues for LLM prompt.");
-            // Промпт для LLM будет без примеров, но прогноз от LLM все равно попытаемся получить
+            log.error("SearchService is null! Cannot search for similar issues.");
+            result.put("prediction", "Ошибка: Сервис поиска Jira недоступен.");
             String promptWithoutExamples = buildPromptForIssueWithExamples(currentIssue, new ArrayList<>());
             result.put("prompt", promptWithoutExamples);
-            return sendToGemini(promptWithoutExamples, result); // Вызываем sendToGemini
+            return sendToGemini(promptWithoutExamples, result);
         }
 
-        // Ищем примеры для LLM (можно использовать предыдущий метод или упрощенный)
-        List<Issue> exampleIssuesForLlm = findResolvedIssuesInSameProject(currentIssue, searchService, TARGET_EXAMPLE_ISSUES_COUNT_FOR_LLM);
-        String prompt = buildPromptForIssueWithExamples(currentIssue, exampleIssuesForLlm);
-        log.info("Final prompt for Gemini (length: {} chars, {} examples): {}", prompt.length(), exampleIssuesForLlm.size(), prompt.substring(0, Math.min(prompt.length(), 200)) + "...");
+        List<Issue> exampleIssues = findResolvedIssuesInSameProject(currentIssue, searchService, TARGET_EXAMPLE_ISSUES_COUNT_FOR_LLM);
+        String prompt = buildPromptForIssueWithExamples(currentIssue, exampleIssues);
+        log.info("Final prompt for Gemini (length: {} chars, {} examples): {}", prompt.length(), exampleIssues.size(), prompt.substring(0, Math.min(prompt.length(), 200)) + "...");
         result.put("prompt", prompt);
 
-        return sendToGemini(prompt, result); // Вызываем sendToGemini
-    }
+        return sendToGemini(prompt, result);
 
-    // Метод sendToGemini остается как был
+    }
+    // ... (остальные методы: sendToGemini, findResolvedIssuesInSameProject, buildPromptForIssueWithExamples, parseGeminiResponse - остаются как были)
+    // Метод sendToGemini остается таким же
     private Map<String, String> sendToGemini(String prompt, Map<String, String> resultAccumulator) {
-        // ... (код тот же) ...
+        // ... (код идентичен предыдущему рабочему варианту) ...
         JSONObject contentPart = new JSONObject();
         contentPart.put("text", prompt);
         JSONArray partsArray = new JSONArray();
@@ -154,116 +182,7 @@ public class GeminiPredictionService {
         return resultAccumulator;
     }
 
-
-    // --- НОВЫЙ МЕТОД для расчета среднего по сложности ---
-    public String getAverageTimeByComplexity(Issue currentIssue) {
-        if (currentIssue == null) {
-            log.warn("Current issue is null for average time calculation.");
-            return "N/A (задача не найдена)";
-        }
-
-        SearchService searchService = ComponentAccessor.getOSGiComponentInstanceOfType(SearchService.class);
-        if (searchService == null) {
-            log.error("SearchService is null! Cannot calculate average time.");
-            return "N/A (сервис поиска недоступен)";
-        }
-
-        ApplicationUser searchUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
-        if (searchUser == null) {
-            searchUser = ComponentAccessor.getUserManager().getUserByName("admin"); // Запасной вариант
-        }
-        if (searchUser == null) {
-            log.error("Cannot find a user to perform search for average time calculation.");
-            return "N/A (пользователь для поиска не найден)";
-        }
-
-        CustomField complexityField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(COMPLEXITY_FIELD_ID);
-        if (complexityField == null) {
-            log.warn("Complexity field with ID '{}' not found. Cannot calculate average by complexity.", COMPLEXITY_FIELD_ID);
-            return "N/A (поле сложности не найдено)";
-        }
-
-        Object rawComplexityValue = currentIssue.getCustomFieldValue(complexityField);
-        if (rawComplexityValue == null) {
-            log.info("Current issue has no complexity value. Cannot calculate average by complexity.");
-            return "N/A (сложность не указана)";
-        }
-
-        String complexitySearchTerm;
-        if (rawComplexityValue instanceof Option) {
-            complexitySearchTerm = ((Option) rawComplexityValue).getValue();
-        } else {
-            complexitySearchTerm = rawComplexityValue.toString();
-        }
-        log.info("Calculating average time for complexity: \"{}\"", complexitySearchTerm);
-
-        // Формируем JQL для поиска решенных задач с такой же сложностью
-        // Можно искать во всех проектах или ограничить текущим проектом
-        String jqlQuery = String.format("\"%s\" = \"%s\" AND resolutiondate IS NOT EMPTY",
-                complexityField.getName(), // Используем имя поля для JQL (убедитесь, что оно простое)
-                // или "cf[" + COMPLEXITY_FIELD_ID + "]"
-                complexitySearchTerm.replace("\"", "\\\"")); // Экранируем значение
-
-        log.info("JQL for average time calculation: {}", jqlQuery);
-
-        SearchService.ParseResult parseResult = searchService.parseQuery(searchUser, jqlQuery);
-        if (!parseResult.isValid()) {
-            log.error("Invalid JQL query for average time: {}. Errors: {}", jqlQuery, parseResult.getErrors().getErrorMessages());
-            return "N/A (ошибка JQL)";
-        }
-
-        long totalDurationMillis = 0;
-        int resolvedIssuesCount = 0;
-        List<Issue> foundIssues;
-
-        try {
-            // PagerFilter.getUnlimitedFilter() - ОСТОРОЖНО! Может быть медленно на больших системах.
-            // Лучше ограничить количество задач для расчета среднего, например, последними 100-200.
-            // PagerFilter pager = new PagerFilter(200); // Например, взять до 200 последних
-            SearchResults searchResults = searchService.search(searchUser, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
-
-            if (searchResults != null) {
-                foundIssues = searchResults.getIssues();
-                log.info("Found {} issues with same complexity for average calculation.", foundIssues.size());
-
-                for (Issue resolvedIssue : foundIssues) {
-                    if (resolvedIssue.getCreated() != null && resolvedIssue.getResolutionDate() != null) {
-                        long duration = resolvedIssue.getResolutionDate().getTime() - resolvedIssue.getCreated().getTime();
-                        totalDurationMillis += duration;
-                        resolvedIssuesCount++;
-                    }
-                }
-            }
-        } catch (SearchException e) {
-            log.error("SearchException during average time calculation: {}", e.getMessage());
-            return "N/A (ошибка поиска)";
-        }
-
-        if (resolvedIssuesCount > 0) {
-            long avgMillis = totalDurationMillis / resolvedIssuesCount;
-            long avgDays = TimeUnit.MILLISECONDS.toDays(avgMillis);
-            long remainingMillis = avgMillis - TimeUnit.DAYS.toMillis(avgDays);
-            long avgHours = TimeUnit.MILLISECONDS.toHours(remainingMillis);
-
-            String avgTimeStr = "";
-            if (avgDays > 0) {
-                avgTimeStr += avgDays + " дн. ";
-            }
-            if (avgHours > 0 || avgDays == 0) { // Показываем часы, если нет дней или если есть часы
-                avgTimeStr += avgHours + " ч.";
-            }
-            if (avgTimeStr.isEmpty()) { // Если время очень маленькое
-                avgTimeStr = "менее 1 ч.";
-            }
-            return String.format("~%s (на основе %d задач)", avgTimeStr.trim(), resolvedIssuesCount);
-        } else {
-            return "Нет данных (0 задач с такой сложностью)";
-        }
-    }
-
-    // Метод findResolvedIssuesInSameProject остается как был (или переименуйте его в findExampleIssuesForLlmPrompt)
     private List<Issue> findResolvedIssuesInSameProject(Issue currentIssue, SearchService searchService, int limit) {
-        // ... (код из предыдущего рабочего варианта) ...
         List<Issue> exampleIssues = new ArrayList<>();
         ApplicationUser searchUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
         if (searchUser == null) { searchUser = ComponentAccessor.getUserManager().getUserByName("admin");}
@@ -287,10 +206,7 @@ public class GeminiPredictionService {
         return exampleIssues;
     }
 
-
-    // Метод buildPromptForIssueWithExamples остается таким же
     private String buildPromptForIssueWithExamples(Issue currentIssue, List<Issue> exampleIssues) {
-        // ... (код тот же) ...
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append("Ты - эксперт по оценке времени выполнения задач в Jira. Твоя задача - на основе предоставленной информации о задаче дать краткий прогноз времени, необходимого для ее полного выполнения. Пожалуйста, ответь только предполагаемым временем (например, '2-3 дня', 'около 4 часов', '1 неделя', '3-5 рабочих дней'). Не добавляй никаких других объяснений, извинений или вводных фраз.\n\n");
         promptBuilder.append("--- Информация об оцениваемой задаче ---\n");
@@ -356,8 +272,6 @@ public class GeminiPredictionService {
         return promptBuilder.toString();
     }
 
-
-    // Метод parseGeminiResponse остается таким же
     private String parseGeminiResponse(String jsonResponse) {
         // ... (код тот же) ...
         try {
@@ -390,6 +304,108 @@ public class GeminiPredictionService {
         } catch (Exception e) {
             log.error("Error parsing Gemini JSON response: '{}'", jsonResponse, e);
             return "Ошибка парсинга ответа Gemini.";
+        }
+    }
+
+    // Метод getAverageTimeByComplexity остается таким же
+    public String getAverageTimeByComplexity(Issue currentIssue) {
+        // ... (код тот же) ...
+        if (currentIssue == null) {
+            log.warn("Current issue is null for average time calculation.");
+            return "N/A (задача не найдена)";
+        }
+
+        SearchService searchService = ComponentAccessor.getOSGiComponentInstanceOfType(SearchService.class);
+        if (searchService == null) {
+            log.error("SearchService is null! Cannot calculate average time.");
+            return "N/A (сервис поиска недоступен)";
+        }
+
+        ApplicationUser searchUser = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+        if (searchUser == null) {
+            searchUser = ComponentAccessor.getUserManager().getUserByName("admin"); // Запасной вариант
+        }
+        if (searchUser == null) {
+            log.error("Cannot find a user to perform search for average time calculation.");
+            return "N/A (пользователь для поиска не найден)";
+        }
+
+        CustomField complexityField = ComponentAccessor.getCustomFieldManager().getCustomFieldObject(COMPLEXITY_FIELD_ID);
+        if (complexityField == null) {
+            log.warn("Complexity field with ID '{}' not found. Cannot calculate average by complexity.", COMPLEXITY_FIELD_ID);
+            return "N/A (поле сложности не найдено)";
+        }
+
+        Object rawComplexityValue = currentIssue.getCustomFieldValue(complexityField);
+        if (rawComplexityValue == null) {
+            log.info("Current issue has no complexity value. Cannot calculate average by complexity.");
+            return "N/A (сложность не указана)";
+        }
+
+        String complexitySearchTerm;
+        if (rawComplexityValue instanceof Option) {
+            complexitySearchTerm = ((Option) rawComplexityValue).getValue();
+        } else {
+            complexitySearchTerm = rawComplexityValue.toString();
+        }
+        log.info("Calculating average time for complexity: \"{}\"", complexitySearchTerm);
+
+        String jqlQuery = String.format("cf[%s] = \"%s\" AND resolutiondate IS NOT EMPTY",
+                COMPLEXITY_FIELD_ID.replace("customfield_", ""),
+                complexitySearchTerm.replace("\"", "\\\""));
+
+
+        log.info("JQL for average time calculation: {}", jqlQuery);
+
+        SearchService.ParseResult parseResult = searchService.parseQuery(searchUser, jqlQuery);
+        if (!parseResult.isValid()) {
+            log.error("Invalid JQL query for average time: {}. Errors: {}", jqlQuery, parseResult.getErrors().getErrorMessages());
+            return "N/A (ошибка JQL)";
+        }
+
+        long totalDurationMillis = 0;
+        int resolvedIssuesCount = 0;
+        List<Issue> foundIssues;
+
+        try {
+            SearchResults searchResults = searchService.search(searchUser, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
+
+            if (searchResults != null) {
+                foundIssues = searchResults.getIssues();
+                log.info("Found {} issues with same complexity for average calculation.", foundIssues.size());
+
+                for (Issue resolvedIssue : foundIssues) {
+                    if (resolvedIssue.getCreated() != null && resolvedIssue.getResolutionDate() != null) {
+                        long duration = resolvedIssue.getResolutionDate().getTime() - resolvedIssue.getCreated().getTime();
+                        totalDurationMillis += duration;
+                        resolvedIssuesCount++;
+                    }
+                }
+            }
+        } catch (SearchException e) {
+            log.error("SearchException during average time calculation: {}", e.getMessage());
+            return "N/A (ошибка поиска)";
+        }
+
+        if (resolvedIssuesCount > 0) {
+            long avgMillis = totalDurationMillis / resolvedIssuesCount;
+            long avgDays = TimeUnit.MILLISECONDS.toDays(avgMillis);
+            long remainingMillis = avgMillis - TimeUnit.DAYS.toMillis(avgDays);
+            long avgHours = TimeUnit.MILLISECONDS.toHours(remainingMillis);
+
+            String avgTimeStr = "";
+            if (avgDays > 0) {
+                avgTimeStr += avgDays + " дн. ";
+            }
+            if (avgHours > 0 || avgDays == 0) {
+                avgTimeStr += avgHours + " ч.";
+            }
+            if (avgTimeStr.isEmpty()) {
+                avgTimeStr = "менее 1 ч.";
+            }
+            return String.format("~%s (на основе %d задач)", avgTimeStr.trim(), resolvedIssuesCount);
+        } else {
+            return "Нет данных (0 задач с такой сложностью)";
         }
     }
 }

@@ -34,4 +34,24 @@
     <!-- Класс, который подготовит данные -->
     <context-provider class="com.atlassian.tutorial.myPlugin.ui.IssueInfoContextProvider"/>
   </web-panel>
+
+  <!-- Сервлет для конфигурации -->
+  <servlet name="Gemini Config Servlet" i18n-name-key="gemini-config-servlet.name" key="gemini-config-servlet" class="com.atlassian.tutorial.myPlugin.servlet.GeminiConfigServlet">
+    <description key="gemini-config-servlet.description">Конфигурация API ключа для Gemini.</description>
+    <url-pattern>/gemini-config</url-pattern> <!-- URL будет /jira/plugins/servlet/gemini-config -->
+  </servlet>
+
+  <!-- Добавляем ссылку на страницу конфигурации в секцию "Управление приложениями" -->
+  <!-- Создаем свою подсекцию для нашего плагина (опционально, но улучшает организацию) -->
+  <web-section name="My Plugin Admin Section"
+               key="myplugin-admin-section" location="admin_plugins_menu" weight="300">
+    <label key="myplugin.admin.section.label">JiraPredict Settings</label> <!-- Название вашей секции -->
+  </web-section>
+
+  <web-item name="Gemini API Key Config"
+            key="gemini-api-key-config" section="admin_plugins_menu/myplugin-admin-section" weight="10">
+    <label key="gemini-api-key-config.label">Configuration Gemini API</label>
+    <link linkId="gemini-api-k
+    ey-config-link">/plugins/servlet/gemini-config</link>
+  </web-item>
 </atlassian-plugin>

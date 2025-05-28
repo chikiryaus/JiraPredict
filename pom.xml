@@ -112,6 +112,13 @@
             <artifactId>json</artifactId>
             <version>20231013</version> <!-- Или более новая версия -->
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.atlassian.templaterenderer/atlassian-template-renderer-api -->
+        <dependency>
+            <groupId>com.atlassian.templaterenderer</groupId>
+            <artifactId>atlassian-template-renderer-api</artifactId>
+            <version>3.0.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

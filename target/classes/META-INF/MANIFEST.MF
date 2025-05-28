@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Atlassian-Build-Date: 2025-05-25T07:30:10+0300
+Atlassian-Build-Date: 2025-05-28T11:51:14+0300
 Atlassian-Plugin-Key: com.atlassian.tutorial.myPlugin
-Bnd-LastModified: 1748147413616
+Bnd-LastModified: 1748422278367
 Build-Jdk: 1.8.0_181
 Built-By: chiki
 Bundle-Description: This is the com.atlassian.tutorial:myPlugin plugin f
