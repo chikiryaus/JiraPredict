@@ -39,7 +39,7 @@ public class GeminiPredictionService {
     private static final Logger log = LoggerFactory.getLogger(GeminiPredictionService.class);
     // Ключ, под которым будет храниться настройка в Jira
     public static final String GEMINI_API_KEY_PLUGIN_SETTING = "com.atlassian.tutorial.myPlugin.geminiApiKey";
-    private static final String GEMINI_API_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=";
+    private static final String GEMINI_API_URL_BASE = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=";
     private static final int TARGET_EXAMPLE_ISSUES_COUNT_FOR_LLM = 5;
     public static final String COMPLEXITY_FIELD_ID = "customfield_10000"; // ЗАМЕНИТЕ!
 

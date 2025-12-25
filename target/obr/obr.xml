@@ -1,7 +1,7 @@
-<repository lastmodified='20250528115120.397'>
+<repository lastmodified='20251225021153.285'>
   <resource id='com.atlassian.tutorial.myPlugin/1.0.0.SNAPSHOT' symbolicname='com.atlassian.tutorial.myPlugin' presentationname='myPlugin' uri='myPlugin-1.0.0-SNAPSHOT.jar' version='1.0.0.SNAPSHOT'>
     <description>This is the com.atlassian.tutorial:myPlugin plugin for Atlassian JIRA.</description>
-    <size>326205</size>
+    <size>326204</size>
     <documentation>chikiryaus@gmail.com</documentation>
     <capability name='bundle'>
       <p n='symbolicname' v='com.atlassian.tutorial.myPlugin'/>
