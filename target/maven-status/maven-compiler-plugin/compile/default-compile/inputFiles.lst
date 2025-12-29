@@ -2,5 +2,6 @@ C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPl
 C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\config\MyPluginJavaConfig.java
 C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\impl\MyPluginComponentImpl.java
 C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\service\GeminiPredictionService.java
+C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\servlet\AnalyticsServlet.java
 C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\servlet\GeminiConfigServlet.java
 C:\Users\chiki\testJiraPlugin\myPlugin\src\main\java\com\atlassian\tutorial\myPlugin\ui\IssueInfoContextProvider.java

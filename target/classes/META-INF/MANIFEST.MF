@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
-Atlassian-Build-Date: 2025-12-25T14:11:44+0300
+Atlassian-Build-Date: 2025-12-27T07:22:33+0300
 Atlassian-Plugin-Key: com.atlassian.tutorial.myPlugin
-Bnd-LastModified: 1766661108906
+Bnd-LastModified: 1766809357228
 Build-Jdk: 1.8.0_181
 Built-By: chiki
 Bundle-Description: This is the com.atlassian.tutorial:myPlugin plugin f
@@ -25,17 +25,17 @@ Import-Package: org.eclipse.gemini.blueprint.context;resolution:=optiona
  sian.jira.issue.search,com.atlassian.jira.plugin.webfragment.contextpro
  viders,com.atlassian.jira.plugin.webfragment.model,com.atlassian.jira.p
  roject,com.atlassian.jira.security,com.atlassian.jira.user,com.atlassia
- n.jira.user.util,com.atlassian.jira.util,com.atlassian.jira.web.bean,co
- m.atlassian.plugin,com.atlassian.plugin.module,com.atlassian.plugin.osg
- i.external,com.atlassian.query,com.atlassian.sal.api,com.atlassian.sal.
- api.auth,com.atlassian.sal.api.pluginsettings,com.atlassian.sal.api.use
- r,com.atlassian.templaterenderer,com.atlassian.tutorial.myPlugin.api;ve
- rsion="[1.0,2)",javax.annotation,javax.servlet,javax.servlet.http,org.o
- sgi.framework,org.slf4j,org.springframework.beans,org.springframework.b
- eans.factory,org.springframework.beans.factory.config,org.springframewo
- rk.cglib.core,org.springframework.cglib.proxy,org.springframework.cglib
- .reflect,org.springframework.context,org.springframework.context.annota
- tion,org.springframework.core.type
+ n.jira.user.util,com.atlassian.jira.web.bean,com.atlassian.plugin,com.a
+ tlassian.plugin.module,com.atlassian.plugin.osgi.external,com.atlassian
+ .query,com.atlassian.sal.api,com.atlassian.sal.api.auth,com.atlassian.s
+ al.api.pluginsettings,com.atlassian.sal.api.user,com.atlassian.template
+ renderer,com.atlassian.tutorial.myPlugin.api;version="[1.0,2)",javax.an
+ notation,javax.net.ssl,javax.servlet,javax.servlet.http,org.osgi.framew
+ ork,org.slf4j,org.springframework.beans,org.springframework.beans.facto
+ ry,org.springframework.beans.factory.config,org.springframework.cglib.c
+ ore,org.springframework.cglib.proxy,org.springframework.cglib.reflect,o
+ rg.springframework.context,org.springframework.context.annotation,org.s
+ pringframework.core.type
 Originally-Created-By: Apache Maven Bundle Plugin
 Spring-Context: *
 Tool: Bnd-3.5.0.201709291849

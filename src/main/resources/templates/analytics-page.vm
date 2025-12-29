@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>Аналитика точности GigaChat</title>
+    <meta name="decorator" content="atl.admin"> <!-- Окружение админки Jira -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div style="padding: 20px;">
+    <h1>Сравнение прогнозов и реальности</h1>
+    <p>На этом графике отображаются решенные задачи, для которых ранее запрашивался прогноз AI.</p>
+
+    <div style="width: 90%; background: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+        <canvas id="analyticsChart"></canvas>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <h3>Как это работает?</h3>
+        <ul>
+            <li><b>Прогноз:</b> Берется из истории запросов к GigaChat (сохранен в момент создания прогноза).</li>
+            <li><b>Реальность:</b> Время от создания задачи до момента установки Resolution (в часах).</li>
+            <li>Если задача еще не решена, она не попадает на график.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Данные из Velocity
+    console.log("df")
+    const dataFromJira = [
+        #foreach($point in $chartData)
+            {
+                label: "$point.key",
+                actual: $point.actual,
+                predicted: $point.predicted
+            }, // Просто ставим запятую всегда
+        #end
+    ];
+
+    const ctx = document.getElementById('analyticsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dataFromJira.map(d => d.label),
+            datasets: [
+                {
+                    label: 'Реальное время (ч)',
+                    data: dataFromJira.map(d => d.actual),
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Прогноз AI (ч)',
+                    data: dataFromJira.map(d => d.predicted),
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: { display: true, text: 'Часы' }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Точность предсказаний времени выполнения'
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

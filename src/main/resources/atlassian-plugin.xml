@@ -54,4 +54,16 @@
     <link linkId="gemini-api-k
     ey-config-link">/plugins/servlet/gemini-config</link>
   </web-item>
+
+  <!-- Сервлет для страницы аналитики -->
+  <servlet name="Analytics Servlet" i18n-name-key="analytics-servlet.name" key="analytics-servlet" class="com.atlassian.tutorial.myPlugin.servlet.AnalyticsServlet">
+    <url-pattern>/prediction-analytics</url-pattern>
+  </servlet>
+
+  <!-- Ссылка в меню настроек -->
+  <web-item name="Prediction Analytics" key="prediction-analytics" section="admin_plugins_menu/myplugin-admin-section" weight="20">
+    <label>Аналитика прогнозов</label>
+    <link linkId="prediction-analytics-link">/plugins/servlet/prediction-analytics</link>
+  </web-item>
+
 </atlassian-plugin>

@@ -4,7 +4,7 @@
     <meta name="decorator" content="atl.admin"> ## Используем стандартный декоратор админки Jira
 </head>
 <body>
-<h2>Config Gemini API</h2>
+<h2>Config API</h2>
 
     #if($req.getParameter("saved") == "true")
     <div class="aui-message aui-message-success">
@@ -16,9 +16,9 @@
 
 <form action="$action" method="post" class="aui">
     <div class="field-group">
-        <label for="apiKey">Gemini API Key<span class="aui-icon icon-required"></span></label>
-        <input class="text medium-long-field" type="text" id="apiKey" name="apiKey" value="$!apiKey" placeholder="Введите ваш API ключ от Google AI Studio">
-        <div class="description">Введите ваш API ключ для доступа к Google Gemini API. Вы можете получить его в <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>.</div>
+        <label for="apiKey">API Key<span class="aui-icon icon-required"></span></label>
+        <input class="text medium-long-field" type="text" id="apiKey" name="apiKey" value="$!apiKey" placeholder="Введите ваш API ключ от GigaChat">
+        <div class="description">Введите ваш API ключ для доступа к GigaChat API.</div>
     </div>
 
     <div class="buttons-container">

@@ -1,5 +1,7 @@
+com\atlassian\tutorial\myPlugin\service\GeminiPredictionService$1.class
 com\atlassian\tutorial\myPlugin\servlet\GeminiConfigServlet.class
 com\atlassian\tutorial\myPlugin\impl\MyPluginComponentImpl.class
+com\atlassian\tutorial\myPlugin\servlet\AnalyticsServlet.class
 com\atlassian\tutorial\myPlugin\service\GeminiPredictionService.class
 com\atlassian\tutorial\myPlugin\api\MyPluginComponent.class
 com\atlassian\tutorial\myPlugin\config\MyPluginJavaConfig.class

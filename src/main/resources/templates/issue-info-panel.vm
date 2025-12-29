@@ -32,19 +32,19 @@
             #end
             <hr/>
 
-            <h4>Prediction from Gemini AI:</h4>
+            <h4>Prediction from  AI:</h4>
             #if($geminiPrediction)
                 <p style="font-weight: bold; color: #0052cc;">$!geminiPrediction</p>
                 #if($geminiPrediction.startsWith("Ошибка"))
-                    <p><small><em>Please, check API key Gemini in the plugin code or Jira logs for details.</em></small></p>
+                    <p><small><em>Please, check API key  in the plugin code or Jira logs for details.</em></small></p>
                 #end
             #else
-                <p><em>Prediction from Gemini not available.</em></p>
+                <p><em>Prediction from AI not available.</em></p>
             #end
             ## Добавляем отображение промпта
             #if($geminiPrompt && $geminiPrompt != "")
                 <details style="margin-top: 10px; border: 1px solid #ccc; padding: 5px; border-radius: 3px;">
-                    <summary style="cursor: pointer; font-size: 0.9em;">Показать/скрыть промпт для Gemini</summary>
+                    <summary style="cursor: pointer; font-size: 0.9em;">Показать/скрыть промпт для AI</summary>
                     <pre style="white-space: pre-wrap; word-wrap: break-word; font-size: 0.85em; margin-top: 5px; background-color: #f5f5f5; padding: 8px; border-radius: 3px;">$!geminiPrompt</pre>
                 </details>
             #end

@@ -1,7 +1,7 @@
-<repository lastmodified='20251225021153.285'>
+<repository lastmodified='20251227072239.231'>
   <resource id='com.atlassian.tutorial.myPlugin/1.0.0.SNAPSHOT' symbolicname='com.atlassian.tutorial.myPlugin' presentationname='myPlugin' uri='myPlugin-1.0.0-SNAPSHOT.jar' version='1.0.0.SNAPSHOT'>
     <description>This is the com.atlassian.tutorial:myPlugin plugin for Atlassian JIRA.</description>
-    <size>326204</size>
+    <size>330034</size>
     <documentation>chikiryaus@gmail.com</documentation>
     <capability name='bundle'>
       <p n='symbolicname' v='com.atlassian.tutorial.myPlugin'/>
@@ -32,7 +32,6 @@
     <require name='package' filter='(&amp;(package=com.atlassian.jira.security))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.security</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.user))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.user</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.user.util))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.user.util</require>
-    <require name='package' filter='(&amp;(package=com.atlassian.jira.util))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.util</require>
     <require name='package' filter='(&amp;(package=com.atlassian.jira.web.bean))' extend='false' multiple='false' optional='false'>Import package com.atlassian.jira.web.bean</require>
     <require name='package' filter='(&amp;(package=com.atlassian.plugin))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin</require>
     <require name='package' filter='(&amp;(package=com.atlassian.plugin.module))' extend='false' multiple='false' optional='false'>Import package com.atlassian.plugin.module</require>
@@ -45,6 +44,7 @@
     <require name='package' filter='(&amp;(package=com.atlassian.templaterenderer))' extend='false' multiple='false' optional='false'>Import package com.atlassian.templaterenderer</require>
     <require name='package' filter='(&amp;(package=com.atlassian.tutorial.myPlugin.api)(version&gt;=1.0.0)(!(version&gt;=2.0.0)))' extend='false' multiple='false' optional='false'>Import package com.atlassian.tutorial.myPlugin.api;version="[1.0,2)"</require>
     <require name='package' filter='(&amp;(package=javax.annotation))' extend='false' multiple='false' optional='false'>Import package javax.annotation</require>
+    <require name='package' filter='(&amp;(package=javax.net.ssl))' extend='false' multiple='false' optional='false'>Import package javax.net.ssl</require>
     <require name='package' filter='(&amp;(package=javax.servlet))' extend='false' multiple='false' optional='false'>Import package javax.servlet</require>
     <require name='package' filter='(&amp;(package=javax.servlet.http))' extend='false' multiple='false' optional='false'>Import package javax.servlet.http</require>
     <require name='package' filter='(&amp;(package=org.osgi.framework))' extend='false' multiple='false' optional='false'>Import package org.osgi.framework</require>
